@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+    // php artisan make:model Post -m (untuk membuat model sekaligus migrasi)
 
     /**
      * Reverse the migrations.
