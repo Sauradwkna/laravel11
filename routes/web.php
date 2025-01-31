@@ -15,7 +15,8 @@ Route::get('/about', function () {
 });
 
 Route::get('/posts', function () {
-    return view('posts', ['title' => 'Blog Page', 'posts' => Post::all()]);
+    $posts = Post::with(['author', 'category'])->latest()->get();
+    return view('posts', ['title' => 'Blog Page', 'posts' => $posts]);
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) { // route model binding
@@ -28,10 +29,17 @@ Route::get('/posts/{post:slug}', function (Post $post) { // route model binding
 Route::get('/authors/{user:username}', function (User $user) { // route model binding
     return view('posts', ['title' => count($user->posts) . ' Article by ' . $user->name, 
     'posts' => $user->posts]);
+
+    // $posts = $user->posts->load('category', 'author');
+    // return view('posts', ['title' => count($posts) . ' Article by ' . $user->name, 
+    // 'posts' => $posts]);
 });
 
 Route::get('/categories/{category:slug}', function (Category $category) { // route model binding
     return view('posts', ['title' => 'Article in: ' . $category->name, 'posts' => $category->posts]);
+
+    // $posts = $category->posts->load('category', 'author');
+    // return view('posts', ['title' => 'Article in: ' . $category->name, 'posts' => $category->posts]);
 });
 
 Route::get('/contact', function () {
